@@ -1,0 +1,45 @@
+#ifndef NOX_INITIALIZER_LIST_HPP
+#define NOX_INITIALIZER_LIST_HPP
+
+namespace nox
+{
+    template <class _Tp>
+    class initializer_list
+    {
+        private:
+            _Tp *_elems;
+            const std::size_t _size;
+
+        public:
+            template <class... Args>
+            initializer_list(Args... args):
+            _elems(new _Tp[sizeof...(Args)]),
+            _size((sizeof...(Args)))
+            {
+                std::size_t index = 0;
+                ((_elems[index++] = args), ...);
+            }
+
+            ~initializer_list()
+            {
+                delete[] this->_elems;
+            }
+
+            _Tp *begin();
+            _Tp *end();
+    };
+}
+
+template <class _Tp>
+_Tp *nox::initializer_list<_Tp>::begin()
+{
+    return this->_elems;
+}
+
+template <class _Tp>
+_Tp *nox::initializer_list<_Tp>::end()
+{
+    return this->_elems[this->_size];
+}
+
+#endif

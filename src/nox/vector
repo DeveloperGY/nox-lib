@@ -1,0 +1,25 @@
+#ifndef NOX_VECTOR_HPP
+#define NOX_VECTOR_HPP
+
+#include "initializer_list"
+
+namespace nox
+{
+    template<class _Tp>
+    struct vector
+    {
+        vector() = default;
+
+        vector(const nox::initializer_list<_Tp> &list)
+        {
+            return;
+        }
+
+        void operator=(const nox::initializer_list<_Tp> &list)
+        {
+            return;
+        }
+    };
+}
+
+#endif

@@ -1,0 +1,71 @@
+#ifndef NOX_EXCEPTION_HPP
+#define NOX_EXCEPTION_HPP
+
+#include <cstdlib>
+#include <iostream>
+
+namespace nox
+{
+    class exception
+    {
+        protected:
+            char *msg;
+
+        public:
+            exception(const char *msg = "nox::exception")
+            {
+                this->msg = (char *)msg;
+            }
+
+            virtual const char *what() const noexcept
+            {
+                return this->msg;
+            }
+    };
+
+    class out_of_range: public exception
+    {
+        private:
+
+        public:
+            out_of_range(const char *msg = "nox::out_of_range")
+            {
+                this->msg = (char *)msg;
+            }
+
+            const char *what() const noexcept
+            {
+                return this->msg;
+            }
+    };
+
+    inline void __terminate();
+
+    inline void __throw_exception(const char *msg = "nox::exception");
+    inline void __throw_out_of_range(const char *msg = "nox::out_of_range");
+}
+
+void nox::__terminate()
+{
+    std::abort();
+}
+
+void nox::__throw_exception(const char *msg)
+{
+    nox::exception e(msg);
+
+    std::cout << "terminate called after throwing instance of \'nox::exception\'\n"
+              << "  what(): " << e.what();
+    nox::__terminate();
+}
+
+void nox::__throw_out_of_range(const char *msg)
+{
+    nox::out_of_range e(msg);
+
+    std::cout << "terminate called after throwing instance of \'nox::out_of_range\'\n"
+              << "  what(): " << e.what();
+    nox::__terminate();
+}
+
+#endif
