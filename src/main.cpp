@@ -1,20 +1,13 @@
-#include <nox/array>
 #include <nox/vector>
 
 #include <iostream>
 
 int main(void)
 {
-    nox::array<int, 5> arr = {0, 1, 2, 3, 4};
     nox::vector<int> vec;
     for (int i=0; i<20; i++)
     {
         vec.push_back(i);
-    }
-
-    for (int &e: arr)
-    {
-        std::cout << e << "\n";
     }
 
     for(int &e: vec)
@@ -22,9 +15,14 @@ int main(void)
         std::cout << e << "\n";
     }
 
-    for(std::size_t i=0; i<vec.size(); i++)
+    auto vec1 = vec.filter([](int &e) -> bool
     {
-        std::cout << vec.at(i) << "\n";
+        return (e % 4) == 0;
+    });
+
+    for(int &e: vec1)
+    {
+        std::cout << e << "\n";
     }
 
     return 0;

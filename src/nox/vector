@@ -24,6 +24,7 @@ namespace nox
             // modification
 
             void push_back(const _Tp &__d);
+            nox::vector<_Tp, _Al> &filter(bool (*_pred)(_Tp &));
 
             // accessors
             _Tp &operator[](std::size_t __n);
@@ -88,6 +89,22 @@ void nox::vector<_Tp, _Al>::push_back(const _Tp &__d)
 
     this->_elems[this->_len++] = __d;
     return;
+}
+
+template <class _Tp, class _Al>
+nox::vector<_Tp, _Al> nox::vector<_Tp, _Al>::filter(bool (*_pred)(_Tp &))
+{
+    nox::vector<_Tp, _Al> vec;
+
+    for (_Tp &e: *this)
+    {
+        if (_pred(e))
+            vec.push_back(e);
+    }
+
+    
+
+    return *this;
 }
 
 // accessors
