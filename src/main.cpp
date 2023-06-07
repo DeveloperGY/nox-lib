@@ -22,5 +22,10 @@ int main(void)
         std::cout << e << "\n";
     }
 
+    for(std::size_t i=0; i<vec.size(); i++)
+    {
+        std::cout << vec.at(i) << "\n";
+    }
+
     return 0;
 }

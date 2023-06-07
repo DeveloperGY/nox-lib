@@ -17,12 +17,20 @@ namespace nox
             ~vector();
 
             // iterators
+
             _Tp *begin();
             _Tp *end();
 
             // modification
 
             void push_back(const _Tp &__d);
+
+            // accessors
+            _Tp &operator[](std::size_t __n);
+            _Tp &at(std::size_t __n);
+
+            // details
+            std::size_t size();
     };
 }
 
@@ -43,6 +51,8 @@ nox::vector<_Tp, _Al>::~vector()
     return;
 }
 
+// iterators
+
 template <class _Tp, class _Al>
 _Tp *nox::vector<_Tp, _Al>::begin()
 {
@@ -54,6 +64,8 @@ _Tp *nox::vector<_Tp, _Al>::end()
 {
     return &this->_elems[this->_len];
 }
+
+// modifiers
 
 template <class _Tp, class _Al>
 void nox::vector<_Tp, _Al>::push_back(const _Tp &__d)
@@ -76,6 +88,30 @@ void nox::vector<_Tp, _Al>::push_back(const _Tp &__d)
 
     this->_elems[this->_len++] = __d;
     return;
+}
+
+// accessors
+
+template <class _Tp, class _Al>
+_Tp &nox::vector<_Tp, _Al>::operator[](std::size_t __n)
+{
+    return this->_elems[__n];
+}
+
+template <class _Tp, class _Al>
+_Tp &nox::vector<_Tp, _Al>::at(std::size_t __n)
+{
+    if (__n >= this->_len)
+        nox::__throw_out_of_range("nox::vector::at()");
+
+    return this->_elems[__n];
+}
+
+// details
+template <class _Tp, class _Al>
+std::size_t nox::vector<_Tp, _Al>::size()
+{
+    return this->_len;
 }
 
 #endif

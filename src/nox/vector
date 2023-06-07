@@ -27,6 +27,10 @@ namespace nox
 
             // accessors
             _Tp &operator[](std::size_t __n);
+            _Tp &at(std::size_t __n);
+
+            // details
+            std::size_t size();
     };
 }
 
@@ -87,10 +91,28 @@ void nox::vector<_Tp, _Al>::push_back(const _Tp &__d)
 }
 
 // accessors
+
 template <class _Tp, class _Al>
 _Tp &nox::vector<_Tp, _Al>::operator[](std::size_t __n)
 {
     return this->_elems[__n];
+}
+
+template <class _Tp, class _Al>
+_Tp &nox::vector<_Tp, _Al>::at(std::size_t __n)
+{
+    if (__n >= this->_len)
+        nox::__throw_out_of_range("nox::vector::at()");
+
+    return this->_elems[__n];
+}
+
+// details
+
+template <class _Tp, class _Al>
+std::size_t nox::vector<_Tp, _Al>::size()
+{
+    return this->_len;
 }
 
 #endif
