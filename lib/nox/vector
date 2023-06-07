@@ -1,26 +1,81 @@
 #ifndef NOX_VECTOR_HPP
 #define NOX_VECTOR_HPP
 
-#include "initializer_list"
+#include "allocator"
 
 namespace nox
 {
-    template<class _Tp>
-    struct vector
+    template <class _Tp, class _Al = nox::allocator<_Tp>>
+    class vector
     {
-        vector() = default;
+        _Tp *_elems;
+        std::size_t _cap;
+        std::size_t _len;
 
-        vector(const nox::initializer_list<_Tp> &list)
-        {
-            return;
-        }
+        public:
+            vector();
+            ~vector();
 
-        void operator=(const _Tp* data)
-        {
-            nox::initializer_list<_Tp> list(data);
-            return;
-        }
+            // iterators
+            _Tp *begin();
+            _Tp *end();
+
+            // modification
+
+            void push_back(const _Tp &__d);
     };
+}
+
+template <class _Tp, class _Al>
+nox::vector<_Tp, _Al>::vector()
+{
+    _Al al;
+    this->_elems = al.allocate(16);
+    this->_cap = 16;
+    this->_len = 0;
+}
+
+template <class _Tp, class _Al>
+nox::vector<_Tp, _Al>::~vector()
+{
+    _Al al;
+    al.deallocate(this->_elems);
+    return;
+}
+
+template <class _Tp, class _Al>
+_Tp *nox::vector<_Tp, _Al>::begin()
+{
+    return &this->_elems[0];
+}
+
+template <class _Tp, class _Al>
+_Tp *nox::vector<_Tp, _Al>::end()
+{
+    return &this->_elems[this->_len];
+}
+
+template <class _Tp, class _Al>
+void nox::vector<_Tp, _Al>::push_back(const _Tp &__d)
+{
+    if (this->_len == this->_cap)
+    {
+        _Al al;
+        _Tp *arr = al.allocate(this->_cap * 2);
+        this->_cap *= 2;
+
+        for (std::size_t i=0; i<this->_len; i++)
+        {
+            arr[i] = this->_elems[i];
+        }
+
+        al.deallocate(this->_elems);
+
+        this->_elems = arr;
+    }
+
+    this->_elems[this->_len++] = __d;
+    return;
 }
 
 #endif

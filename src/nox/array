@@ -2,6 +2,7 @@
 #define NOX_ARRAY_HPP
 
 #include "exception"
+#include "allocator"
 
 #include <cstddef>
 

@@ -25,10 +25,22 @@ namespace nox
 
     class out_of_range: public exception
     {
-        private:
-
         public:
             out_of_range(const char *msg = "nox::out_of_range")
+            {
+                this->msg = (char *)msg;
+            }
+
+            const char *what() const noexcept
+            {
+                return this->msg;
+            }
+    };
+
+    class bad_alloc: public exception
+    {
+        public:
+            bad_alloc(const char *msg = "nox::bad_alloc")
             {
                 this->msg = (char *)msg;
             }
@@ -43,6 +55,7 @@ namespace nox
 
     inline void __throw_exception(const char *msg = "nox::exception");
     inline void __throw_out_of_range(const char *msg = "nox::out_of_range");
+    inline void __throw_bad_alloc(const char *msg = "nox::bad_alloc");
 }
 
 void nox::__terminate()
@@ -64,6 +77,15 @@ void nox::__throw_out_of_range(const char *msg)
     nox::out_of_range e(msg);
 
     std::cout << "terminate called after throwing instance of \'nox::out_of_range\'\n"
+              << "  what(): " << e.what();
+    nox::__terminate();
+}
+
+void nox::__throw_bad_alloc(const char *msg)
+{
+    nox::bad_alloc e(msg);
+
+    std::cout << "terminate called after throwing instance of \'nox::bad_alloc\'\n"
               << "  what(): " << e.what();
     nox::__terminate();
 }
