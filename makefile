@@ -6,7 +6,7 @@ library:
 test: build run
 
 build:
-	g++ src/*.cpp -o bin/exe -Ilib
+	g++ src/*.cpp -o bin/exe -Ilib -std=c++20
 
 run:
 	./bin/exe

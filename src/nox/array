@@ -3,6 +3,7 @@
 
 #include "exception"
 #include "allocator"
+#include "vector"
 
 #include <cstddef>
 
@@ -22,6 +23,9 @@ namespace nox
         _Tp &at(std::size_t __n);
         _Tp &front();
         _Tp &back();
+
+        // modifiers
+        nox::vector<_Tp> filter(bool (*_pred)(_Tp &));
     };
 }
 
@@ -66,6 +70,20 @@ template <class _Tp, std::size_t _Nm>
 _Tp &nox::array<_Tp, _Nm>::back()
 {
     return this->_elems[_Nm - 1];
+}
+
+template <class _Tp, std::size_t _Nm>
+nox::vector<_Tp> nox::array<_Tp, _Nm>::filter(bool (*_pred)(_Tp &))
+{
+    nox::vector<_Tp> vec;
+
+    for (_Tp &e: *this)
+    {
+        if (_pred(e))
+            vec.push_back(e);
+    }
+
+    return vec;
 }
 
 #endif

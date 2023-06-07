@@ -1,29 +1,11 @@
-#include <nox/vector>
+#include <nox/math>
 
 #include <iostream>
 
 int main(void)
 {
-    nox::vector<int> vec;
-    for (int i=0; i<20; i++)
-    {
-        vec.push_back(i);
-    }
-
-    for(int &e: vec)
-    {
-        std::cout << e << "\n";
-    }
-
-    auto vec1 = vec.filter([](int &e) -> bool
-    {
-        return (e % 4) == 0;
-    });
-
-    for(int &e: vec1)
-    {
-        std::cout << e << "\n";
-    }
-
+    nox::vec2<int> v2 = {0, 1};
+    nox::vec3<float> v3 = {0.0f, 0.1f, 0.2f};
+    nox::vec4<unsigned int> v4 = {0, 1, 2, 3};
     return 0;
 }

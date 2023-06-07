@@ -1,0 +1,33 @@
+#ifndef NOX_MATH_VEC_HPP
+#define NOX_MATH_VEC_HPP
+
+// before continuing, make const variants of everything
+
+namespace nox
+{
+    template <class _Tp>
+    struct vec2
+    {
+        _Tp x;
+        _Tp y;
+    };
+
+    template <class _Tp>
+    struct vec3
+    {
+        _Tp x;
+        _Tp y;
+        _Tp z;
+    };
+
+    template <class _Tp>
+    struct vec4
+    {
+        _Tp x;
+        _Tp y;
+        _Tp z;
+        _Tp w;
+    };
+}
+
+#endif
