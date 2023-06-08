@@ -1,6 +1,8 @@
 #ifndef NOX_MATH_VEC_HPP
 #define NOX_MATH_VEC_HPP
 
+// before continuing, make const variants of everything
+
 namespace nox
 {
     template <class _Tp>

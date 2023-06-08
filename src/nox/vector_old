@@ -1,0 +1,162 @@
+#ifndef NOX_VECTOR_HPP
+#define NOX_VECTOR_HPP
+
+#include "allocator"
+
+namespace nox
+{
+    template <class _Tp, class _Al = nox::allocator<_Tp>>
+    class vector
+    {
+        _Tp *_elems;
+        std::size_t _cap;
+        std::size_t _len;
+
+        public:
+            vector();
+            ~vector();
+
+            // iterators
+
+            constexpr _Tp *begin() const;
+            _Tp *end() const;
+
+            // modification
+
+            void push_back(const _Tp &__d);
+            nox::vector<_Tp, _Al> filter(bool (*_pred)(_Tp &)) const;
+            nox::vector<_Tp, _Al> &operator=(const nox::vector<_Tp, _Al> &__v);
+
+            // accessors
+            _Tp &operator[](std::size_t __n);
+            _Tp &operator[](std::size_t __n) const;
+            _Tp &at(std::size_t __n);
+            _Tp &at(std::size_t __n) const;
+
+            // details
+            std::size_t size() const;
+            std::size_t capacity() const;
+    };
+}
+
+template <class _Tp, class _Al>
+nox::vector<_Tp, _Al>::vector()
+{
+    _Al al;
+    this->_elems = al.allocate(16);
+    this->_cap = 16;
+    this->_len = 0;
+}
+
+template <class _Tp, class _Al>
+nox::vector<_Tp, _Al>::~vector()
+{
+    _Al al;
+    al.deallocate(this->_elems);
+    return;
+}
+
+// iterators
+
+template <class _Tp, class _Al>
+constexpr _Tp *nox::vector<_Tp, _Al>::begin() const
+{
+    return &this->_elems[0];
+}
+
+template <class _Tp, class _Al>
+_Tp *nox::vector<_Tp, _Al>::end() const
+{
+    return &this->_elems[this->_len];
+}
+
+// modifiers
+
+template <class _Tp, class _Al>
+void nox::vector<_Tp, _Al>::push_back(const _Tp &__d)
+{
+    if (this->_len == this->_cap)
+    {
+        _Al al;
+        _Tp *arr = al.allocate(this->_cap * 2);
+        this->_cap *= 2;
+
+        for (std::size_t i=0; i<this->_len; i++)
+        {
+            arr[i] = this->_elems[i];
+        }
+
+        al.deallocate(this->_elems);
+
+        this->_elems = arr;
+    }
+
+    this->_elems[this->_len++] = __d;
+    return;
+}
+
+template <class _Tp, class _Al>
+nox::vector<_Tp, _Al> nox::vector<_Tp, _Al>::filter(bool (*_pred)(_Tp &)) const
+{
+    nox::vector<_Tp, _Al> vec;
+
+    for (_Tp &e: *this)
+    {
+        if (_pred(e))
+            vec.push_back(e);
+    }
+
+    return vec;
+}
+
+template <class _Tp, class _Al>
+nox::vector<_Tp, _Al> &nox::vector<_Tp, _Al>::operator=(const nox::vector<_Tp, _Al> &__v)
+{
+    _Al al;
+    al.deallocate(this->_elems);
+    this->_cap = 0;
+    this->_len = 0;
+
+    this->_elems = al.allocate(__v.capacity());
+    this->_cap = __v.capacity();
+
+    for (_Tp &e: __v)
+    {
+        this->push_back(e);
+    }
+
+    return *this;
+}
+
+// accessors
+
+template <class _Tp, class _Al>
+_Tp &nox::vector<_Tp, _Al>::operator[](std::size_t __n) const
+{
+    return this->_elems[__n];
+}
+
+template <class _Tp, class _Al>
+_Tp &nox::vector<_Tp, _Al>::at(std::size_t __n) const
+{
+    if (__n >= this->_len)
+        nox::__throw_out_of_range("nox::vector::at()");
+
+    return this->_elems[__n];
+}
+
+// details
+
+template <class _Tp, class _Al>
+std::size_t nox::vector<_Tp, _Al>::size() const
+{
+    return this->_len;
+}
+
+template <class _Tp, class _Al>
+std::size_t nox::vector<_Tp, _Al>::capacity() const
+{
+    return this->_cap;
+}
+
+#endif
