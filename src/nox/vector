@@ -21,6 +21,7 @@ namespace nox
             constexpr nox::vector<_Tp, _Al> &operator=(nox::vector<_Tp, _Al> &__v);
 
             // Element access
+
             constexpr _Tp &operator[](std::size_t __n) noexcept;
             constexpr _Tp &operator[](std::size_t __n) const noexcept;
 
@@ -30,11 +31,11 @@ namespace nox
             constexpr _Tp &front() noexcept;
             constexpr _Tp &front() const noexcept;
 
-            constexpr _Tp &back();
-            constexpr _Tp &back() const;
+            constexpr _Tp &back() noexcept;
+            constexpr _Tp &back() const noexcept;
 
-            constexpr _Tp *data();
-            constexpr _Tp *data() const;
+            constexpr _Tp *data() noexcept;
+            constexpr _Tp *data() const noexcept;
 
             // Iterators
 
