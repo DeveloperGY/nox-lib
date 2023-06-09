@@ -65,3 +65,15 @@ constexpr _Tp &nox::vector<_Tp, _Al>::at(std::size_t __n) const
     
     return this->_M_elems[__n];
 }
+
+template <class _Tp, class _Al>
+constexpr _Tp &front() noexcept
+{
+    return this->_elems[0];
+}
+
+template <class _Tp, class _Al>
+constexpr _Tp &front() cosnt noexcept
+{
+    return this->_elems[0];
+}

@@ -27,8 +27,8 @@ namespace nox
             constexpr _Tp &at(std::size_t __n);
             constexpr _Tp &at(std::size_t __n) const;
 
-            constexpr _Tp &front();
-            constexpr _Tp &front() const;
+            constexpr _Tp &front() noexcept;
+            constexpr _Tp &front() const noexcept;
 
             constexpr _Tp &back();
             constexpr _Tp &back() const;

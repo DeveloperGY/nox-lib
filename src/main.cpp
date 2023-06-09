@@ -3,8 +3,6 @@
 
 int main(void)
 {
-    nox::__throw_exception("main()");
-
     nox::vector<int> v;
 
     int x = v.at(0);

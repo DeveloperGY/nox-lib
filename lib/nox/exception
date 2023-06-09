@@ -67,7 +67,8 @@ void nox::__throw_exception(const char *msg)
 {
     nox::exception e(msg);
 
-    std::cout << "terminate called after throwing instance of \'nox::exception\'\n\twhat(): " << e.what();
+    std::cout << "terminate called after throwing instance of \'nox::exception\'\n"
+              << "  what(): " << e.what() << "\n";
     nox::__terminate();
 }
 
@@ -75,7 +76,8 @@ void nox::__throw_out_of_range(const char *msg)
 {
     nox::out_of_range e(msg);
 
-    std::cout << "terminate called after throwing instance of \'nox::out_of_range\'\n  what(): " << e.what();
+    std::cout << "terminate called after throwing instance of \'nox::out_of_range\'\n"
+              << "  what(): " << e.what() << "\n";
     nox::__terminate();
 }
 
@@ -83,7 +85,8 @@ void nox::__throw_bad_alloc(const char *msg)
 {
     nox::bad_alloc e(msg);
 
-    std::cout << "terminate called after throwing instance of \'nox::bad_alloc\'\n  what(): " << e.what();
+    std::cout << "terminate called after throwing instance of \'nox::bad_alloc\'\n"
+              << "  what(): " << e.what() << "\n";
     nox::__terminate();
 }
 
