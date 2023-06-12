@@ -39,9 +39,26 @@ namespace nox
 
             // Iterators
 
+            constexpr _Tp *begin() noexcept;
+            constexpr _Tp *begin() const noexcept;
+
+            constexpr _Tp *end() noexcept;
+            constexpr _Tp *end() const noexcept;
+
             // Capacity
 
+            [[nodiscard]] constexpr bool empty() noexcept;
+            [[nodiscard]] constexpr bool empty() const noexcept;
+
+            constexpr std::size_t size() noexcept;
+            constexpr std::size_t size() const noexcept;
+
+            constexpr std::size_t capacity() noexcept;
+            constexpr std::size_t capacity() const noexcept;
+
             // Modifiers
+
+            constexpr void clear() noexcept;
 
     };
 }

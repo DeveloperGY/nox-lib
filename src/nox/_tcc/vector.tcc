@@ -34,7 +34,7 @@ constexpr nox::vector<_Tp, _Al> &nox::vector<_Tp, _Al>::operator=(nox::vector<_T
     return *this;
 }
 
-// element access
+// Element access
 
 template <class _Tp, class _Al>
 constexpr _Tp &nox::vector<_Tp, _Al>::operator[](std::size_t __n) noexcept
@@ -100,4 +100,77 @@ template <class _Tp, class _Al>
 constexpr _Tp *nox::vector<_Tp, _Al>::data() const noexcept
 {
     return this->_M_elems;
+}
+
+// Iterators
+
+template <class _Tp, class _Al>
+constexpr _Tp *nox::vector<_Tp, _Al>::begin() noexcept
+{
+    return &this->_M_elems[0];
+}
+
+template <class _Tp, class _Al>
+constexpr _Tp *nox::vector<_Tp, _Al>::begin() const noexcept
+{
+    return &this->_M_elems[0];
+}
+
+template <class _Tp, class _Al>
+constexpr _Tp *nox::vector<_Tp, _Al>::end() noexcept
+{
+    return &this->_M_elems[this->_M_size];
+}
+
+template <class _Tp, class _Al>
+constexpr _Tp *nox::vector<_Tp, _Al>::end() const noexcept
+{
+    return &this->_M_elems[this->_M_size];
+}
+
+// Capacity
+
+template <class _Tp, class _Al>
+constexpr bool nox::vector<_Tp, _Al>::empty() noexcept
+{
+    return this->_M_size == 0;
+}
+
+template <class _Tp, class _Al>
+constexpr bool nox::vector<_Tp, _Al>::empty() const noexcept
+{
+    return this->_M_size == 0;
+}
+
+template <class _Tp, class _Al>
+constexpr std::size_t nox::vector<_Tp, _Al>::size() noexcept
+{
+    return this->_M_size;
+}
+
+template <class _Tp, class _Al>
+constexpr std::size_t nox::vector<_Tp, _Al>::size() const noexcept
+{
+    return this->_M_size;
+}
+
+template <class _Tp, class _Al>
+constexpr std::size_t nox::vector<_Tp, _Al>::capacity() noexcept
+{
+    return this->_M_capacity;
+}
+
+template <class _Tp, class _Al>
+constexpr std::size_t nox::vector<_Tp, _Al>::capacity() const noexcept
+{
+    return this->_M_capacity;
+}
+
+// modifiers
+
+template <class _Tp, class _Al>
+constexpr void nox::vector<_Tp, _Al>::clear() noexcept
+{
+    this->_M_size = 0; // not done
+    return;
 }

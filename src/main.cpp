@@ -1,13 +1,11 @@
 #include <nox/vector>
-#include <nox/exception>
+
+#include <vector>
 
 int main(void)
 {
     nox::vector<int> v;
-
-    // int x = v.at(0);
-
-    int y = v.back();
+    std::vector<int> v2;
 
     return 0;
 }

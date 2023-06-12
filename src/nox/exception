@@ -51,7 +51,7 @@ namespace nox
             }
     };
 
-    inline void __terminate();
+    [[noreturn]] inline void __terminate();
 
     inline void __throw_exception(const char *msg = "nox::exception");
     inline void __throw_out_of_range(const char *msg = "nox::out_of_range");
