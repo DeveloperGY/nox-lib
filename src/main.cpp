@@ -1,11 +1,10 @@
-#include <nox/vector>
+#include <nox/math>
 
-#include <vector>
+#include <iostream>
 
 int main(void)
 {
-    nox::vector<int> v;
-    std::vector<int> v2;
+    nox::vec3<float> v3 = {0, 0, 0};
 
     return 0;
 }

@@ -2,6 +2,7 @@
 #define NOX_VECTOR_HPP
 
 #include "allocator"
+#include "_internal/_helper.hpp"
 
 #include <cstddef>
 
@@ -50,7 +51,7 @@ namespace nox
             [[nodiscard]] constexpr bool empty() noexcept;
             [[nodiscard]] constexpr bool empty() const noexcept;
 
-            constexpr std::size_t size() noexcept;
+            [[nodiscard]] constexpr std::size_t size() noexcept;
             constexpr std::size_t size() const noexcept;
 
             constexpr std::size_t capacity() noexcept;
@@ -59,7 +60,22 @@ namespace nox
             // Modifiers
 
             constexpr void clear() noexcept;
+            constexpr void insert(_Tp *__position, const _Tp &__e);
 
+            template <class... Args>
+            constexpr void emplace(_Tp *__position, Args&&... args);
+            
+            constexpr void erase(_Tp *__position);
+            constexpr void erase(_Tp *__first, _Tp *__last);
+            constexpr void push_back(const _Tp &__e);
+
+            template <class... Args>
+            constexpr void emplace_back(Args&&... args);
+            
+            constexpr void pop_back();
+            constexpr void swap(nox::vector<_Tp, _Al> &__v) noexcept;
+
+            constexpr nox::vector<_Tp, _Al> filter(bool (*__pred)(const _Tp &)) const; // this could be optimized by shifting values around and implementing erasing a range
     };
 }
 
