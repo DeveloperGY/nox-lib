@@ -8,7 +8,7 @@
 
 namespace nox
 {
-    template<class _Tp>
+    template<class _Tp = char>
     class allocator
     {
         private:

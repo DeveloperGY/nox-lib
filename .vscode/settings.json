@@ -90,7 +90,11 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "display": "cpp",
+        "allocator": "cpp",
+        "vec": "cpp",
+        "tui": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

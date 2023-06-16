@@ -1,0 +1,39 @@
+#ifndef NOX_DISPLAY_HPP
+#define NOX_DISPLAY_HPP
+
+#include "_math/vec"
+#include "array"
+
+#include <cstddef>
+
+// " \x1b [ 4 8 ;  2 ; 0 0  0 ; 0 0  0 ; 0 0  0 m \x1b [ m"
+    //   1    1 1 1 1  1 1 1 1  1 1 1 1  1 1 1 1  1 1 1    1 1
+    //   1  + 19 + 2
+
+namespace nox
+{
+    typedef nox::vec3<unsigned char> color;
+
+    template <std::size_t _Wd, std::size_t _Ht>
+    class tui
+    {
+        private:
+            
+
+            nox::array<char, _Wd*_Ht> _M_character_buffer;
+            nox::array<nox::color, _Wd*_Ht> _M_foreground_color_buffer;
+            nox::array<nox::color, _Wd*_Ht> _M_background_color_buffer;
+
+            /*
+            * 45 is the amount of characters required per pixel in the tui
+            */
+            nox::array<char, _Ht * (_Wd * 45 + 1)> _M_print_buffer; // 45 is the max amount of characters needed per pixel in the tui
+
+        public:
+            tui();
+    };
+}
+
+#include "_tcc/tui.tcc"
+
+#endif
