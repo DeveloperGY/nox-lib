@@ -57,6 +57,8 @@ namespace nox
             constexpr std::size_t capacity() noexcept;
             constexpr std::size_t capacity() const noexcept;
 
+            constexpr void reserve(std::size_t __n);
+
             // Modifiers
 
             constexpr void clear() noexcept;

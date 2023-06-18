@@ -166,17 +166,40 @@ constexpr std::size_t nox::vector<_Tp, _Al>::capacity() const noexcept
     return this->_M_capacity;
 }
 
+template <class _Tp, class _Al>
+constexpr void nox::vector<_Tp, _Al>::reserve(std::size_t __n)
+{
+    if (__n <= this->_M_capacity)
+        return;
+
+    _Al _al;
+
+    _Tp *ptr = _al.allocate(__n);
+
+    for (std::size_t i=0; i<this->_M_size; i++)
+    {
+        ptr[i] = std::move(this->_M_elems[i]);
+    }
+
+    _al.deallocate(this->_M_elems);
+
+    this->_M_elems = ptr;
+    this->_M_capacity = __n;
+
+    return;
+}
+
 // modifiers
 
 template <class _Tp, class _Al>
 constexpr void nox::vector<_Tp, _Al>::clear() noexcept
 {
-    this->_M_size = 0;
-
     for (int i=0; i<this->_M_size; i++)
     {
         nox::_destroy(&this->_M_elems[i]);
     }
+
+    this->_M_size = 0;
 
     return;
 }

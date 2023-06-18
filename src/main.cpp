@@ -4,9 +4,9 @@
 
 int main(void)
 {
-    nox::tui<640, 480> display;
-
-    std::cout << " \x1b[48;2;255;255;000mtest\x1b[m\n";
-
+    nox::tui<10, 10> tui;
+    tui.draw_character({1,1}, 'C', {255, 0, 255}, {0, 255, 0});
+    tui.draw_pixel({2, 2}, {89, 73, 158});
+    tui.display();
     return 0;
 }

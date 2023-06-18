@@ -2,13 +2,16 @@
 #define NOX_DISPLAY_HPP
 
 #include "_math/vec"
-#include "array"
+#include "vector"
 
 #include <cstddef>
+#include <cstdio>
+
+#include <string> // temp until custom string class
 
 // " \x1b [ 4 8 ;  2 ; 0 0  0 ; 0 0  0 ; 0 0  0 m \x1b [ m"
-    //   1    1 1 1 1  1 1 1 1  1 1 1 1  1 1 1 1  1 1 1    1 1
-    //   1  + 19 + 2
+//   1    1 1 1 1  1 1 1 1  1 1 1 1  1 1 1 1  1 1 1    1 1
+//   1  + 19 + 2
 
 namespace nox
 {
@@ -18,19 +21,18 @@ namespace nox
     class tui
     {
         private:
-            
-
-            nox::array<char, _Wd*_Ht> _M_character_buffer;
-            nox::array<nox::color, _Wd*_Ht> _M_foreground_color_buffer;
-            nox::array<nox::color, _Wd*_Ht> _M_background_color_buffer;
-
-            /*
-            * 45 is the amount of characters required per pixel in the tui
-            */
-            nox::array<char, _Ht * (_Wd * 45 + 1)> _M_print_buffer; // 45 is the max amount of characters needed per pixel in the tui
+            nox::vector<char> _M_character_buffer;
+            nox::vector<nox::color> _M_foreground_color_buffer;
+            nox::vector<nox::color> _M_background_color_buffer;
+            nox::vector<char> _M_print_buffer;
 
         public:
             tui();
+
+            constexpr void display() noexcept;
+
+            constexpr void draw_character(nox::vec2<std::size_t> __pos, const char &__c, const nox::color &__fg, const nox::color &__bg) noexcept;
+            constexpr void draw_pixel(nox::vec2<std::size_t> __pos, const nox::color &__color) noexcept;
     };
 }
 
