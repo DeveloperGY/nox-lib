@@ -1,7 +1,7 @@
-template <class _Tp>
-_Tp *nox::allocator<_Tp>::allocate(std::size_t __n)
+template <class _Type>
+_Type *nox::allocator<_Type>::allocate(std::size_t __element_count)
 {
-    _Tp *ptr = (_Tp *)std::malloc(sizeof(_Tp) * __n);
+    _Type *ptr = (_Type *)std::malloc(sizeof(_Type) * __element_count);
 
     if (ptr == nullptr)
         nox::__throw_bad_alloc("nox::allocator<T>::allocate()");
@@ -9,8 +9,8 @@ _Tp *nox::allocator<_Tp>::allocate(std::size_t __n)
     return ptr;
 }
 
-template <class _Tp>
-void nox::allocator<_Tp>::deallocate(_Tp *__ptr)
+template <class _Type>
+void nox::allocator<_Type>::deallocate(_Type *__ptr)
 {
     if (__ptr != nullptr)
         std::free(__ptr);

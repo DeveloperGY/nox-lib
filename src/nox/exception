@@ -9,53 +9,53 @@ namespace nox
     class exception
     {
         protected:
-            char *msg;
+            char *m_msg;
 
         public:
-            exception(const char *msg = "nox::exception")
+            exception(const char *__msg = "nox::exception")
             {
-                this->msg = (char *)msg;
+                this->m_msg = (char *)__msg;
             }
 
             virtual const char *what() const noexcept
             {
-                return this->msg;
+                return this->m_msg;
             }
     };
 
     class out_of_range: public exception
     {
         public:
-            out_of_range(const char *msg = "nox::out_of_range")
+            out_of_range(const char *__msg = "nox::out_of_range")
             {
-                this->msg = (char *)msg;
+                this->m_msg = (char *)__msg;
             }
 
             const char *what() const noexcept
             {
-                return this->msg;
+                return this->m_msg;
             }
     };
 
     class bad_alloc: public exception
     {
         public:
-            bad_alloc(const char *msg = "nox::bad_alloc")
+            bad_alloc(const char *__msg = "nox::bad_alloc")
             {
-                this->msg = (char *)msg;
+                this->m_msg = (char *)__msg;
             }
 
             const char *what() const noexcept
             {
-                return this->msg;
+                return this->m_msg;
             }
     };
 
     [[noreturn]] inline void __terminate();
 
-    inline void __throw_exception(const char *msg = "nox::exception");
-    inline void __throw_out_of_range(const char *msg = "nox::out_of_range");
-    inline void __throw_bad_alloc(const char *msg = "nox::bad_alloc");
+    inline void __throw_exception(const char *__msg = "nox::exception");
+    inline void __throw_out_of_range(const char *__msg = "nox::out_of_range");
+    inline void __throw_bad_alloc(const char *__msg = "nox::bad_alloc");
 }
 
 void nox::__terminate()
@@ -63,27 +63,27 @@ void nox::__terminate()
     std::abort();
 }
 
-void nox::__throw_exception(const char *msg)
+void nox::__throw_exception(const char *__msg)
 {
-    nox::exception e(msg);
+    nox::exception e(__msg);
 
     std::cout << "terminate called after throwing instance of \'nox::exception\'\n"
               << "  what(): " << e.what() << "\n";
     nox::__terminate();
 }
 
-void nox::__throw_out_of_range(const char *msg)
+void nox::__throw_out_of_range(const char *__msg)
 {
-    nox::out_of_range e(msg);
+    nox::out_of_range e(__msg);
 
     std::cout << "terminate called after throwing instance of \'nox::out_of_range\'\n"
               << "  what(): " << e.what() << "\n";
     nox::__terminate();
 }
 
-void nox::__throw_bad_alloc(const char *msg)
+void nox::__throw_bad_alloc(const char *__msg)
 {
-    nox::bad_alloc e(msg);
+    nox::bad_alloc e(__msg);
 
     std::cout << "terminate called after throwing instance of \'nox::bad_alloc\'\n"
               << "  what(): " << e.what() << "\n";

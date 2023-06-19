@@ -1,133 +1,177 @@
-template <std::size_t _Wd, std::size_t _Ht>
-nox::tui<_Wd, _Ht>::tui()
+template <std::size_t _Width, std::size_t _Height>
+nox::tui<_Width, _Height>::tui()
 {
-    this->_M_character_buffer.reserve(_Wd * _Ht);
-    this->_M_foreground_color_buffer.reserve(_Wd * _Ht);
-    this->_M_background_color_buffer.reserve(_Wd * _Ht);
-    this->_M_print_buffer.reserve(_Ht * (_Wd * 42 + 1));
+    // Number of characters required to represent one character in the tui,
+    // including the character to be printed, represented in number of characters
+    const std::size_t ANSI_ESCAPE_CODE_LENGTH = 42;
 
-    for (std::size_t i=0; i<_Wd*_Ht; i++)
+    // Length of one line in the print buffer, represented in number of characters
+    // The + 1 represents a newline or null terminator character
+    const std::size_t PRINT_LINE_LENGTH = _Width * ANSI_ESCAPE_CODE_LENGTH + 1;
+
+    this->m_character_buffer.reserve(_Width * _Height);
+    this->m_foreground_color_buffer.reserve(_Width * _Height);
+    this->m_background_color_buffer.reserve(_Width * _Height);
+    
+    this->m_print_buffer.reserve(_Height * PRINT_LINE_LENGTH); 
+
+    for (std::size_t index=0; index<_Width*_Height; index++)
     {
-        this->_M_character_buffer.push_back(' ');
-        this->_M_foreground_color_buffer.push_back({0, 0, 0});
-        this->_M_background_color_buffer.push_back({0, 0, 0});
+        this->m_character_buffer.push_back(' ');
+        this->m_foreground_color_buffer.push_back({0, 0, 0});
+        this->m_background_color_buffer.push_back({0, 0, 0});
     }
 
-    for (std::size_t i=0; i<_Ht * (_Wd * 42 + 1); i++)
+    for (std::size_t index=0; index<_Height * PRINT_LINE_LENGTH; index++)
     {
-        this->_M_print_buffer.push_back(' ');
+        this->m_print_buffer.push_back(' ');
     }
 
     return;
 }
 
-template <std::size_t _Wd, std::size_t _Ht>
-constexpr void nox::tui<_Wd, _Ht>::display() noexcept
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::display() noexcept
 {
+    // The index in the print buffer
     std::size_t index = 0;
 
-    char __fg_red[4];
-    char __fg_green[4];
-    char __fg_blue[4];
+    // string representations of the color values
+    char foreground_red[4];
+    char foreground_green[4];
+    char foreground_blue[4];
 
-    char __bg_red[4];
-    char __bg_green[4];
-    char __bg_blue[4];
+    char background_red[4];
+    char background_green[4];
+    char background_blue[4];
 
-    for (std::size_t __row=0; __row<_Ht; __row++)
+    for (std::size_t row=0; row<_Height; row++)
     {
-        for (std::size_t __col=0; __col<_Wd; __col++)
+        for (std::size_t col=0; col<_Width; col++)
         {
-            std::size_t __current_pixel = __row * _Wd + __col;
+            // A conversion from 2d array index form to 1d array index form
+            std::size_t current_pixel = row * _Width + col;
 
-            std::snprintf(__fg_red, 4, "%03d", this->_M_foreground_color_buffer[__current_pixel].x);
-            std::snprintf(__fg_green, 4, "%03d", this->_M_foreground_color_buffer[__current_pixel].y);
-            std::snprintf(__fg_blue, 4, "%03d", this->_M_foreground_color_buffer[__current_pixel].z);
+            std::snprintf(foreground_red, 4, "%03d", this->m_foreground_color_buffer[current_pixel].r);
+            std::snprintf(foreground_green, 4, "%03d", this->m_foreground_color_buffer[current_pixel].g);
+            std::snprintf(foreground_blue, 4, "%03d", this->m_foreground_color_buffer[current_pixel].b);
 
-            std::snprintf(__bg_red, 4, "%03d", this->_M_background_color_buffer[__current_pixel].x);
-            std::snprintf(__bg_green, 4, "%03d", this->_M_background_color_buffer[__current_pixel].y);
-            std::snprintf(__bg_blue, 4, "%03d", this->_M_background_color_buffer[__current_pixel].z);
+            std::snprintf(background_red, 4, "%03d", this->m_background_color_buffer[current_pixel].r);
+            std::snprintf(background_green, 4, "%03d", this->m_background_color_buffer[current_pixel].g);
+            std::snprintf(background_blue, 4, "%03d", this->m_background_color_buffer[current_pixel].b);
 
-            this->_M_print_buffer[index++] = '\x1b';
-            this->_M_print_buffer[index++] = '[';
-            this->_M_print_buffer[index++] = '3';
-            this->_M_print_buffer[index++] = '8';
-            this->_M_print_buffer[index++] = ';';
-            this->_M_print_buffer[index++] = '2';
-            this->_M_print_buffer[index++] = ';';
-            this->_M_print_buffer[index++] = __fg_red[0];
-            this->_M_print_buffer[index++] = __fg_red[1];
-            this->_M_print_buffer[index++] = __fg_red[2];
-            this->_M_print_buffer[index++] = ';';
-            this->_M_print_buffer[index++] = __fg_green[0];
-            this->_M_print_buffer[index++] = __fg_green[1];
-            this->_M_print_buffer[index++] = __fg_green[2];
-            this->_M_print_buffer[index++] = ';';
-            this->_M_print_buffer[index++] = __fg_blue[0];
-            this->_M_print_buffer[index++] = __fg_blue[1];
-            this->_M_print_buffer[index++] = __fg_blue[2];
-            this->_M_print_buffer[index++] = 'm';
-            this->_M_print_buffer[index++] = '\x1b';
-            this->_M_print_buffer[index++] = '[';
-            this->_M_print_buffer[index++] = '4';
-            this->_M_print_buffer[index++] = '8';
-            this->_M_print_buffer[index++] = ';';
-            this->_M_print_buffer[index++] = '2';
-            this->_M_print_buffer[index++] = ';';
-            this->_M_print_buffer[index++] = __bg_red[0];
-            this->_M_print_buffer[index++] = __bg_red[1];
-            this->_M_print_buffer[index++] = __bg_red[2];
-            this->_M_print_buffer[index++] = ';';
-            this->_M_print_buffer[index++] = __bg_green[0];
-            this->_M_print_buffer[index++] = __bg_green[1];
-            this->_M_print_buffer[index++] = __bg_green[2];
-            this->_M_print_buffer[index++] = ';';
-            this->_M_print_buffer[index++] = __bg_blue[0];
-            this->_M_print_buffer[index++] = __bg_blue[1];
-            this->_M_print_buffer[index++] = __bg_blue[2];
-            this->_M_print_buffer[index++] = 'm';
-            this->_M_print_buffer[index++] = this->_M_character_buffer[__current_pixel];
-            this->_M_print_buffer[index++] = '\x1b';
-            this->_M_print_buffer[index++] = '[';
-            this->_M_print_buffer[index++] = 'm';
+            this->m_print_buffer[index++] = '\x1b';
+            this->m_print_buffer[index++] = '[';
+            this->m_print_buffer[index++] = '3';
+            this->m_print_buffer[index++] = '8';
+            this->m_print_buffer[index++] = ';';
+            this->m_print_buffer[index++] = '2';
+            this->m_print_buffer[index++] = ';';
+            this->m_print_buffer[index++] = foreground_red[0];
+            this->m_print_buffer[index++] = foreground_red[1];
+            this->m_print_buffer[index++] = foreground_red[2];
+            this->m_print_buffer[index++] = ';';
+            this->m_print_buffer[index++] = foreground_green[0];
+            this->m_print_buffer[index++] = foreground_green[1];
+            this->m_print_buffer[index++] = foreground_green[2];
+            this->m_print_buffer[index++] = ';';
+            this->m_print_buffer[index++] = foreground_blue[0];
+            this->m_print_buffer[index++] = foreground_blue[1];
+            this->m_print_buffer[index++] = foreground_blue[2];
+            this->m_print_buffer[index++] = 'm';
+            this->m_print_buffer[index++] = '\x1b';
+            this->m_print_buffer[index++] = '[';
+            this->m_print_buffer[index++] = '4';
+            this->m_print_buffer[index++] = '8';
+            this->m_print_buffer[index++] = ';';
+            this->m_print_buffer[index++] = '2';
+            this->m_print_buffer[index++] = ';';
+            this->m_print_buffer[index++] = background_red[0];
+            this->m_print_buffer[index++] = background_red[1];
+            this->m_print_buffer[index++] = background_red[2];
+            this->m_print_buffer[index++] = ';';
+            this->m_print_buffer[index++] = background_green[0];
+            this->m_print_buffer[index++] = background_green[1];
+            this->m_print_buffer[index++] = background_green[2];
+            this->m_print_buffer[index++] = ';';
+            this->m_print_buffer[index++] = background_blue[0];
+            this->m_print_buffer[index++] = background_blue[1];
+            this->m_print_buffer[index++] = background_blue[2];
+            this->m_print_buffer[index++] = 'm';
+            this->m_print_buffer[index++] = this->m_character_buffer[current_pixel];
+            this->m_print_buffer[index++] = '\x1b';
+            this->m_print_buffer[index++] = '[';
+            this->m_print_buffer[index++] = 'm';
 
-            this->_M_character_buffer[__current_pixel] = ' ';
-            this->_M_foreground_color_buffer[__current_pixel] = {0, 0, 0};
-            this->_M_background_color_buffer[__current_pixel] = {0, 0, 0};
+            this->m_character_buffer[current_pixel] = ' ';
+            this->m_foreground_color_buffer[current_pixel] = {0, 0, 0};
+            this->m_background_color_buffer[current_pixel] = {0, 0, 0};
         }
-        this->_M_print_buffer[index++] = '\n';
+        this->m_print_buffer[index++] = '\n';
     }
 
-    this->_M_print_buffer[index-1] = '\0';
+    this->m_print_buffer[index-1] = '\0';
 
-    std::printf("\x1b[2J\x1b[H%s", this->_M_print_buffer.data());
+    std::printf("\x1b[2J\x1b[H%s", this->m_print_buffer.data());
 
     return;
 }
 
-template <std::size_t _Wd, std::size_t _Ht>
-constexpr void nox::tui<_Wd, _Ht>::draw_character(nox::vec2<std::size_t> __pos, const char &__c, const nox::color &__fg, const nox::color &__bg) noexcept
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_character(nox::vec2<std::size_t> __position, const char &__character, const nox::color &__foreground_color, const nox::color &__background_color) noexcept
 {
-    if (__pos.x < _Wd && __pos.y < _Ht)
+    if (__position.x < _Width && __position.y < _Height)
     {
-        std::size_t __index = __pos.y * _Wd + __pos.x;
-        this->_M_character_buffer[__index] = __c;
-        this->_M_foreground_color_buffer[__index] = __fg;
-        this->_M_background_color_buffer[__index] = __bg;
+        std::size_t index = __position.y * _Width + __position.x;
+        this->m_character_buffer[index] = __character;
+        this->m_foreground_color_buffer[index] = __foreground_color;
+        this->m_background_color_buffer[index] = __background_color;
     }
     
     return;
 }
 
-template <std::size_t _Wd, std::size_t _Ht>
-constexpr void nox::tui<_Wd, _Ht>::draw_pixel(nox::vec2<std::size_t> __pos, const nox::color &__color) noexcept
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_pixel(nox::vec2<std::size_t> __position, const nox::color &__color) noexcept
 {
-    if (__pos.x < _Wd && __pos.y < _Ht)
+    this->draw_character(__position, ' ', __color, __color);
+    return;
+}
+
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_rect_c(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const char &__fill_character, const char &__border_character, const nox::color &__fill_foreground_color, const nox::color &__fill_background_color, const nox::color &__border_foreground_color, const nox::color &__border_background_color)
+{
+    for (std::size_t row=0; row<__dimensions.y; row++)
     {
-        std::size_t __index = __pos.y * _Wd + __pos.x;
-        this->_M_character_buffer[__index] = ' ';
-        this->_M_foreground_color_buffer[__index] = __color;
-        this->_M_background_color_buffer[__index] = __color;
+        for (std::size_t col=0; col<__dimensions.x; col++)
+        {
+            if (row == 0 || col == 0 || row == __dimensions.y-1 || col == __dimensions.x-1)
+                this->draw_character({__position.x + col, __position.y + row}, __border_character, __border_foreground_color, __border_background_color);
+            else
+                this->draw_character({__position.x + col, __position.y + row}, __fill_character, __fill_foreground_color, __fill_background_color);
+        }
     }
+
+    return;
+}
+
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_rect(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const nox::color &__fill_color, const nox::color &__border_color)
+{
+    this->draw_rect_c(__position, __dimensions, ' ', ' ', __fill_color, __fill_color, __border_color, __border_color);
+    return;
+}
+
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_fill_rect_c(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const char &__character, const nox::color &__foreground_color, const nox::color &__background_color)
+{
+    this->draw_rect_c(__position, __dimensions, __character, __character, __foreground_color, __background_color, __foreground_color, __background_color);
+    return;
+}
+
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_fill_rect(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const nox::color &__color)
+{
+    this->draw_fill_rect_c(__position, __dimensions, ' ', __color, __color);
     return;
 }

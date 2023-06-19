@@ -7,32 +7,37 @@
 #include <cstddef>
 #include <cstdio>
 
-#include <string> // temp until custom string class
-
-// " \x1b [ 4 8 ;  2 ; 0 0  0 ; 0 0  0 ; 0 0  0 m \x1b [ m"
-//   1    1 1 1 1  1 1 1 1  1 1 1 1  1 1 1 1  1 1 1    1 1
-//   1  + 19 + 2
-
 namespace nox
 {
-    typedef nox::vec3<unsigned char> color;
+    struct color
+    {
+        unsigned char r;
+        unsigned char g;
+        unsigned char b;
+    };
 
-    template <std::size_t _Wd, std::size_t _Ht>
+    template <std::size_t _Width, std::size_t _Height>
     class tui
     {
         private:
-            nox::vector<char> _M_character_buffer;
-            nox::vector<nox::color> _M_foreground_color_buffer;
-            nox::vector<nox::color> _M_background_color_buffer;
-            nox::vector<char> _M_print_buffer;
+            nox::vector<char> m_character_buffer;
+            nox::vector<nox::color> m_foreground_color_buffer;
+            nox::vector<nox::color> m_background_color_buffer;
+            nox::vector<char> m_print_buffer;
 
         public:
             tui();
 
             constexpr void display() noexcept;
 
-            constexpr void draw_character(nox::vec2<std::size_t> __pos, const char &__c, const nox::color &__fg, const nox::color &__bg) noexcept;
-            constexpr void draw_pixel(nox::vec2<std::size_t> __pos, const nox::color &__color) noexcept;
+            constexpr void draw_pixel(nox::vec2<std::size_t> __position, const nox::color &__color) noexcept;
+            constexpr void draw_character(nox::vec2<std::size_t> __position, const char &__character, const nox::color &__foreground_color, const nox::color &__background_color) noexcept;
+
+            constexpr void draw_rect(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const nox::color &__fill_color, const nox::color &__border_color);
+            constexpr void draw_rect_c(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const char &__fill_character, const char &__border_character, const nox::color &__fill_foreground_color, const nox::color &__fill_background_color, const nox::color &__border_foreground_color, const nox::color &__border_background_color);
+
+            constexpr void draw_fill_rect(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const nox::color &__color);
+            constexpr void draw_fill_rect_c(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const char &__character, const nox::color &__foreground_color, const nox::color &__background_color);
     };
 }
 

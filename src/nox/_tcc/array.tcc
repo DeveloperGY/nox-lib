@@ -1,144 +1,144 @@
 // Element access
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp &nox::array<_Tp, _Nm>::at(std::size_t __n)
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type &nox::array<_Type, _ElementCount>::at(std::size_t __index)
 {
-    if (__n >= _Nm)
+    if (__index >= _ElementCount)
         nox::__throw_out_of_range("nox::array::at()");
 
-    return this->_M_elems[__n];
+    return this->m_elems[__index];
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp &nox::array<_Tp, _Nm>::at(std::size_t __n) const
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type &nox::array<_Type, _ElementCount>::at(std::size_t __index) const
 {
-    if (__n >= _Nm)
+    if (__index >= _ElementCount)
         nox::__throw_out_of_range("nox::array::at()");
 
-    return this->_M_elems[__n];
+    return this->m_elems[__index];
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp &nox::array<_Tp, _Nm>::operator[](std::size_t __n) noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type &nox::array<_Type, _ElementCount>::operator[](std::size_t __index) noexcept
 {
-    return this->_M_elems[__n];
+    return this->m_elems[__index];
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp &nox::array<_Tp, _Nm>::operator[](std::size_t __n) const noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type &nox::array<_Type, _ElementCount>::operator[](std::size_t __index) const noexcept
 {
-    return this->_M_elems[__n];
+    return this->m_elems[__index];
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp &nox::array<_Tp, _Nm>::front() noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type &nox::array<_Type, _ElementCount>::front() noexcept
 {
-    return this->_M_elems[0];
+    return this->m_elems[0];
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp &nox::array<_Tp, _Nm>::front() const noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type &nox::array<_Type, _ElementCount>::front() const noexcept
 {
-    return this->_M_elems[0];
+    return this->m_elems[0];
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp &nox::array<_Tp, _Nm>::back() noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type &nox::array<_Type, _ElementCount>::back() noexcept
 {
-    return this->_M_elems[_Nm];
+    return this->m_elems[_ElementCount];
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp &nox::array<_Tp, _Nm>::back() const noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type &nox::array<_Type, _ElementCount>::back() const noexcept
 {
-    return this->_M_elems[_Nm ? _Nm-1 : 0];
+    return this->m_elems[_ElementCount ? _ElementCount-1 : 0];
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp *nox::array<_Tp, _Nm>::data() noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type *nox::array<_Type, _ElementCount>::data() noexcept
 {
-    return this->_M_elems;
+    return this->m_elems;
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp *nox::array<_Tp, _Nm>::data() const noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type *nox::array<_Type, _ElementCount>::data() const noexcept
 {
-    return this->_M_elems;
+    return this->m_elems;
 }
 
 // Iterators
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp *nox::array<_Tp, _Nm>::begin() noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type *nox::array<_Type, _ElementCount>::begin() noexcept
 {
-    return &this->_M_elems[0];
+    return &this->m_elems[0];
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr const _Tp *nox::array<_Tp, _Nm>::begin() const noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr const _Type *nox::array<_Type, _ElementCount>::begin() const noexcept
 {
-    return &this->_M_elems[0];
+    return &this->m_elems[0];
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr _Tp *nox::array<_Tp, _Nm>::end() noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr _Type *nox::array<_Type, _ElementCount>::end() noexcept
 {
-    return &this->_M_elems[_Nm];
+    return &this->m_elems[_ElementCount];
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr const _Tp *nox::array<_Tp, _Nm>::end() const noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr const _Type *nox::array<_Type, _ElementCount>::end() const noexcept
 {
-    return &this->_M_elems[_Nm];
+    return &this->m_elems[_ElementCount];
 }
 
 // Capacity
 
-template <class _Tp, std::size_t _Nm>
-constexpr bool nox::array<_Tp, _Nm>::empty() const noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr bool nox::array<_Type, _ElementCount>::empty() const noexcept
 {
     return this->begin() == this->end();
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr std::size_t nox::array<_Tp, _Nm>::size() const noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr std::size_t nox::array<_Type, _ElementCount>::size() const noexcept
 {
-    return _Nm;
+    return _ElementCount;
 }
 
 // Modifiers
 
-template <class _Tp, std::size_t _Nm>
-constexpr void nox::array<_Tp, _Nm>::fill(const _Tp & __e) noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr void nox::array<_Type, _ElementCount>::fill(const _Type & __element) noexcept
 {
-    for (_Tp &e: *this)
+    for (_Type &element: *this)
     {
-        e = __e;
+        element = __element;
     }
 
     return;
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr void nox::array<_Tp, _Nm>::swap(nox::array<_Tp, _Nm> &__a) noexcept
+template <class _Type, std::size_t _ElementCount>
+constexpr void nox::array<_Type, _ElementCount>::swap(nox::array<_Type, _ElementCount> &__array) noexcept
 {
-    _Tp *__temp = this->_M_elems;
-    this->_M_elems = __a._M_elems;
-    __a._M_elems = __temp;
+    _Type *temp = this->m_elems;
+    this->m_elems = __array.m_elems;
+    __array.m_elems = temp;
 
     return;
 }
 
-template <class _Tp, std::size_t _Nm>
-constexpr nox::vector<_Tp> nox::array<_Tp, _Nm>::filter(bool (*__pred)(const _Tp &)) const
+template <class _Type, std::size_t _ElementCount>
+constexpr nox::vector<_Type> nox::array<_Type, _ElementCount>::filter(bool (*__predicate)(const _Type &)) const
 {
-    nox::vector<_Tp> __v;
+    nox::vector<_Type> vec;
 
-    for (const _Tp &__e: *this)
+    for (const _Type &element: *this)
     {
-        if (__pred(__e))
-            __v.push_back(__e);
+        if (__pred(element))
+            vec.push_back(element);
     }
 
-    return __v;
+    return vec;
 }

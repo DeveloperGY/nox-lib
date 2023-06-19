@@ -8,43 +8,43 @@
 
 namespace nox
 {
-    template <class _Tp, class _Al = nox::allocator<_Tp>>
+    template <class _Type, class _Allocator = nox::allocator<_Type>>
     class vector
     {
         private:
-            std::size_t _M_capacity;
-            std::size_t _M_size;
-            _Tp *_M_elems;
+            std::size_t m_capacity;
+            std::size_t m_size;
+            _Type *m_elems;
         
         public:
             constexpr vector();
             ~vector() noexcept;
-            constexpr nox::vector<_Tp, _Al> &operator=(nox::vector<_Tp, _Al> &__v);
+            constexpr nox::vector<_Type, _Allocator> &operator=(const nox::vector<_Type, _Allocator> &__vector);
 
             // Element access
 
-            constexpr _Tp &operator[](std::size_t __n) noexcept;
-            constexpr _Tp &operator[](std::size_t __n) const noexcept;
+            constexpr _Type &operator[](std::size_t __index) noexcept;
+            constexpr _Type &operator[](std::size_t __index) const noexcept;
 
-            constexpr _Tp &at(std::size_t __n);
-            constexpr _Tp &at(std::size_t __n) const;
+            constexpr _Type &at(std::size_t __index);
+            constexpr _Type &at(std::size_t __index) const;
 
-            constexpr _Tp &front() noexcept;
-            constexpr _Tp &front() const noexcept;
+            constexpr _Type &front() noexcept;
+            constexpr _Type &front() const noexcept;
 
-            constexpr _Tp &back() noexcept;
-            constexpr _Tp &back() const noexcept;
+            constexpr _Type &back() noexcept;
+            constexpr _Type &back() const noexcept;
 
-            constexpr _Tp *data() noexcept;
-            constexpr _Tp *data() const noexcept;
+            constexpr _Type *data() noexcept;
+            constexpr _Type *data() const noexcept;
 
             // Iterators
 
-            constexpr _Tp *begin() noexcept;
-            constexpr _Tp *begin() const noexcept;
+            constexpr _Type *begin() noexcept;
+            constexpr _Type *begin() const noexcept;
 
-            constexpr _Tp *end() noexcept;
-            constexpr _Tp *end() const noexcept;
+            constexpr _Type *end() noexcept;
+            constexpr _Type *end() const noexcept;
 
             // Capacity
 
@@ -57,27 +57,27 @@ namespace nox
             constexpr std::size_t capacity() noexcept;
             constexpr std::size_t capacity() const noexcept;
 
-            constexpr void reserve(std::size_t __n);
+            constexpr void reserve(std::size_t __new_capacity);
 
             // Modifiers
 
             constexpr void clear() noexcept;
-            constexpr void insert(_Tp *__position, const _Tp &__e);
+            constexpr void insert(_Type *__position, const _Type &__element);
 
-            template <class... Args>
-            constexpr void emplace(_Tp *__position, Args&&... args);
+            template <class... _Args>
+            constexpr void emplace(_Type *__position, _Args&&... __args);
             
-            constexpr void erase(_Tp *__position);
-            constexpr void erase(_Tp *__first, _Tp *__last);
-            constexpr void push_back(const _Tp &__e);
+            constexpr void erase(_Type *__position);
+            constexpr void erase(_Type *__first, _Type *__last);
+            constexpr void push_back(const _Type &__element);
 
-            template <class... Args>
-            constexpr void emplace_back(Args&&... args);
+            template <class... _Args>
+            constexpr void emplace_back(_Args&&... __args);
             
             constexpr void pop_back();
-            constexpr void swap(nox::vector<_Tp, _Al> &__v) noexcept;
+            constexpr void swap(nox::vector<_Type, _Allocator> &__vector) noexcept;
 
-            constexpr nox::vector<_Tp, _Al> filter(bool (*__pred)(const _Tp &)) const; // this could be optimized by shifting values around and implementing erasing a range
+            constexpr nox::vector<_Type, _Allocator> filter(bool (*__predicate)(const _Type &)) const;
     };
 }
 

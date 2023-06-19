@@ -8,35 +8,35 @@
 
 namespace nox
 {
-    template <class _Tp, std::size_t _Nm>
+    template <class _Type, std::size_t _ElementCount>
     struct array
     {
-        _Tp _M_elems[_Nm ? _Nm : 1];
+        _Type m_elems[_ElementCount ? _ElementCount : 1];
 
         // Element access
         
-        constexpr _Tp &at(std::size_t __n);
-        constexpr _Tp &at(std::size_t __n) const;
+        constexpr _Type &at(std::size_t __index);
+        constexpr _Type &at(std::size_t __index) const;
 
-        constexpr _Tp &operator[](std::size_t __n) noexcept;
-        constexpr _Tp &operator[](std::size_t __n) const noexcept;
+        constexpr _Type &operator[](std::size_t __index) noexcept;
+        constexpr _Type &operator[](std::size_t __index) const noexcept;
 
-        constexpr _Tp &front() noexcept;
-        constexpr _Tp &front() const noexcept;
+        constexpr _Type &front() noexcept;
+        constexpr _Type &front() const noexcept;
 
-        constexpr _Tp &back() noexcept;
-        constexpr _Tp &back() const noexcept;
+        constexpr _Type &back() noexcept;
+        constexpr _Type &back() const noexcept;
 
-        constexpr _Tp *data() noexcept;
-        constexpr _Tp *data() const noexcept;
+        constexpr _Type *data() noexcept;
+        constexpr _Type *data() const noexcept;
 
         // Iterators
 
-        constexpr _Tp *begin() noexcept;
-        constexpr const _Tp *begin() const noexcept;
+        constexpr _Type *begin() noexcept;
+        constexpr const _Type *begin() const noexcept;
 
-        constexpr _Tp *end() noexcept;
-        constexpr const _Tp *end() const noexcept;
+        constexpr _Type *end() noexcept;
+        constexpr const _Type *end() const noexcept;
 
         // Capacity
 
@@ -45,10 +45,10 @@ namespace nox
 
         // Modifiers
 
-        constexpr void fill(const _Tp & __e) noexcept;
-        constexpr void swap(nox::array<_Tp, _Nm> &__a) noexcept;
+        constexpr void fill(const _Type & __element) noexcept;
+        constexpr void swap(nox::array<_Type, _Nm> &__array) noexcept;
 
-        constexpr nox::vector<_Tp> filter(bool (*__pred)(const _Tp &)) const;
+        constexpr nox::vector<_Type> filter(bool (*__predicate)(const _Type &)) const;
     };
 }
 

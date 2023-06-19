@@ -3,28 +3,28 @@
 
 namespace nox
 {
-    template <class _Tp>
+    template <class _Type>
     struct vec2
     {
-        _Tp x;
-        _Tp y;
+        _Type x;
+        _Type y;
     };
 
-    template <class _Tp>
+    template <class _Type>
     struct vec3
     {
-        _Tp x;
-        _Tp y;
-        _Tp z;
+        _Type x;
+        _Type y;
+        _Type z;
     };
 
-    template <class _Tp>
+    template <class _Type>
     struct vec4
     {
-        _Tp x;
-        _Tp y;
-        _Tp z;
-        _Tp w;
+        _Type x;
+        _Type y;
+        _Type z;
+        _Type w;
     };
 }
 

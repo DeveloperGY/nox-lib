@@ -1,0 +1,25 @@
+NOX-LIB STYLE GUIDELINES
+
+
+Naming Conventions
+
+    Identifiers are to be written in snake case with the following exceptions
+     - Template Parameters are to be written in Pascal Case and preceeded with an underscore
+     - Function Parameters must be preceeded with a double underscore
+     - Class variables must be preceeded with m_ unless it is a public member variable that 
+       is part of the public interface, in which case you can ommit the m_, such as with the
+       nox::vec structs
+     - Constants must be in all caps. If the constant happenes to be a member variable 
+       then it is in all caps except for the preceeding "m_"
+     - ABOVE ALL, variables must have descriptive names, including loop variables. 
+       You are allowed to shorten the name to a slightly less descriptive name if you 
+       provide a descriptive comment. This is useful if the name is used as an index such as
+       line 36-37 in tui::display()
+
+
+Arithmetic Conventions
+
+    Any and all arithmetic that is not trivial to understand must be put into a variable
+    before use. If this means making multiple variables to describe complicated 
+    arithemtic, so be it.
+    A descriptive comment is optional but recommended.

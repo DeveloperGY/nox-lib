@@ -21,3 +21,9 @@ val:
 
 clean:
 	rm -rf lib/* bin/*
+
+install: library
+	sudo cp -r lib/nox /usr/include/	
+
+remove:
+	sudo rm -r /usr/include/nox

@@ -8,14 +8,14 @@
 
 namespace nox
 {
-    template<class _Tp = char>
+    template<class _Type = char>
     class allocator
     {
         private:
 
         public:
-            virtual _Tp *allocate(std::size_t __n);
-            virtual void deallocate(_Tp *__ptr);
+            virtual _Type *allocate(std::size_t __element_count);
+            virtual void deallocate(_Type *__ptr);
     };
 }
 
