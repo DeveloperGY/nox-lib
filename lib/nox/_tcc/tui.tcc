@@ -175,3 +175,101 @@ constexpr void nox::tui<_Width, _Height>::draw_fill_rect(nox::vec2<std::size_t> 
     this->draw_fill_rect_c(__position, __dimensions, ' ', __color, __color);
     return;
 }
+
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_stroke_rect_c(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const char &__character, const nox::color &__foreground_color, const nox::color &__background_color)
+{
+    for (std::size_t row=0; row<__dimensions.y; row++)
+    {
+        for (std::size_t col=0; col<__dimensions.x; col++)
+        {
+            if (row == 0 || col == 0 || row == __dimensions.y-1 || col == __dimensions.x-1)
+                this->draw_character({__position.x + col, __position.y + row}, __character, __foreground_color, __background_color);
+        }
+    }
+
+    return;
+}
+
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_stroke_rect(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const nox::color &__color)
+{
+    this->draw_stroke_rect_c(__position, __dimensions, ' ', __color, __color);
+
+    return;
+}
+
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_text_horizontal(nox::vec2<std::size_t> __position, const char *__text, const nox::color &__foreground_color, const nox::color &__background_color)
+{
+    for (std::size_t index=0; __text[index]!='\0'; index++)
+    {
+        this->draw_character({__position.x + index, __position.y}, __text[index], __foreground_color, __background_color);
+    }
+
+    return;
+}
+
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_text_vertical(nox::vec2<std::size_t> __position, const char *__text, const nox::color &__foreground_color, const nox::color &__background_color)
+{
+    for (std::size_t index=0; __text[index]!='\0'; index++)
+    {
+        this->draw_character({__position.x, __position.y + index}, __text[index], __foreground_color, __background_color);
+    }
+
+    return;
+}
+
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_line_c(nox::vec2<std::size_t> __start_position, nox::vec2<std::size_t> __end_position, const char &__character, const nox::color __foreground_color, const nox::color &__background_color)
+{
+    // presume a slope -1<=x<=1 
+
+    nox::vec2<std::size_t> start = __start_position;
+    nox::vec2<std::size_t> end = __end_position;
+
+    float slope = ((double)end.y - (double)start.y) / ((double)end.x - (double)start.x);
+    std::size_t y_value = start.y;
+    float error = 0.0f;
+
+    if (slope < 0)
+    {
+        for (std::size_t x_value=start.x; x_value<=end.x; x_value++)
+        {
+            if (error > 0.5f)
+            {
+                y_value--;
+                error -= 1;
+            }
+
+            this->draw_character({x_value, y_value}, __character, __foreground_color, __background_color);
+            error -= slope;
+        }
+    }
+    else
+    {
+        for (std::size_t x_value=start.x; x_value<=end.x; x_value++)
+    {
+        if (error > 0.5f)
+        {
+            y_value++;
+            error -= 1;
+        }
+
+        this->draw_character({x_value, y_value}, __character, __foreground_color, __background_color);
+        error += slope;
+    }
+    }
+
+    // this->draw_character(start, __character, {0, 255, 0}, {0, 255, 0});
+    // this->draw_character(end, __character, {255, 0, 0}, {255, 0, 0});
+
+    return;
+}
+
+template <std::size_t _Width, std::size_t _Height>
+constexpr void nox::tui<_Width, _Height>::draw_line()
+{
+    return;
+}

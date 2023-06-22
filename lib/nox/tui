@@ -6,6 +6,7 @@
 
 #include <cstddef>
 #include <cstdio>
+#include <iostream>
 
 namespace nox
 {
@@ -38,6 +39,15 @@ namespace nox
 
             constexpr void draw_fill_rect(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const nox::color &__color);
             constexpr void draw_fill_rect_c(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const char &__character, const nox::color &__foreground_color, const nox::color &__background_color);
+
+            constexpr void draw_stroke_rect(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const nox::color &__color);
+            constexpr void draw_stroke_rect_c(nox::vec2<std::size_t> __position, nox::vec2<std::size_t> __dimensions, const char &__character, const nox::color &__foreground_color, const nox::color &__background_color);
+
+            constexpr void draw_text_horizontal(nox::vec2<std::size_t> __position, const char *__text, const nox::color &__foreground_color, const nox::color &__background_color);
+            constexpr void draw_text_vertical(nox::vec2<std::size_t> __position, const char *__text, const nox::color &__foreground_color, const nox::color &__background_color);
+
+            constexpr void draw_line();
+            constexpr void draw_line_c(nox::vec2<std::size_t> __start_position, nox::vec2<std::size_t> __end_position, const char &__character, const nox::color __foreground_color, const nox::color &__background_color);
     };
 }
 
