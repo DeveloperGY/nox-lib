@@ -1,0 +1,20 @@
+#ifndef NOX_IO_HPP
+#define NOX_IO_HPP
+
+#ifdef linux
+#include <termios.h>
+#include <sys/select.h>
+#endif
+
+#ifdef _WIN32
+#endif
+
+namespace nox
+{
+    char _getch();
+    char getch(unsigned int __max_wait_time);
+}
+
+#include "_tcc/io.tcc"
+
+#endif

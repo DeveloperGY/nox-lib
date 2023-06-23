@@ -224,52 +224,66 @@ constexpr void nox::tui<_Width, _Height>::draw_text_vertical(nox::vec2<std::size
 template <std::size_t _Width, std::size_t _Height>
 constexpr void nox::tui<_Width, _Height>::draw_line_c(nox::vec2<std::size_t> __start_position, nox::vec2<std::size_t> __end_position, const char &__character, const nox::color __foreground_color, const nox::color &__background_color)
 {
-    // presume a slope -1<=x<=1 
+    int dx = (int)__end_position.x - (int)__start_position.x;
+    int dy = (int)__end_position.y - (int)__start_position.y;
 
-    nox::vec2<std::size_t> start = __start_position;
-    nox::vec2<std::size_t> end = __end_position;
-
-    float slope = ((double)end.y - (double)start.y) / ((double)end.x - (double)start.x);
-    std::size_t y_value = start.y;
-    float error = 0.0f;
-
-    if (slope < 0)
+    if (dy == 0)
     {
-        for (std::size_t x_value=start.x; x_value<=end.x; x_value++)
+        for (std::size_t x_value=__start_position.x; x_value<=__end_position.x; x_value++)
         {
-            if (error > 0.5f)
-            {
-                y_value--;
-                error -= 1;
-            }
-
-            this->draw_character({x_value, y_value}, __character, __foreground_color, __background_color);
-            error -= slope;
+            this->draw_character({x_value, __start_position.y}, __character, __foreground_color, __background_color);
         }
+
+        return;
     }
-    else
+    else if (dx == 0)
     {
-        for (std::size_t x_value=start.x; x_value<=end.x; x_value++)
+        for (std::size_t y_value=__start_position.y; y_value<=__end_position.y; y_value++)
+        {
+            this->draw_character({__start_position.x, y_value}, __character, __foreground_color, __background_color);
+        }
+
+        return;
+    }
+
+    float slope = (float)dy/(float)dx;
+    bool loop_y = slope > 1.0f || slope < -1.0f;
+
+    slope = (loop_y) ? -1 / slope : slope;
+
+    std::size_t independent_start = (loop_y) ? ((__start_position.y > __end_position.y) ? __end_position.y : __start_position.y) : ((__start_position.x > __end_position.x) ? __end_position.x : __start_position.x);
+    std::size_t independent_end = (loop_y) ? ((__start_position.y > __end_position.y) ? __start_position.y : __end_position.y) : ((__start_position.x > __end_position.x) ? __start_position.x : __end_position.x);
+    std::size_t dependent_start = (loop_y) ? ((__start_position.y > __end_position.y) ? __end_position.x : __start_position.x) : ((__start_position.x > __end_position.x) ? __end_position.y : __start_position.y);
+    std::size_t dependent_end = (loop_y) ? ((__start_position.y > __end_position.y) ? __start_position.x : __end_position.x) : ((__start_position.x > __end_position.x) ? __start_position.y : __end_position.y);
+
+    float error = 0.0f;
+    std::size_t independent = independent_start;
+    std::size_t dependent = dependent_start;
+    
+    std::size_t *x_coord = (loop_y) ? &dependent : &independent;
+    std::size_t *y_coord = (loop_y) ? &independent : &dependent;
+    
+    float error_modifier = (slope >= 0) ? slope : -1 * slope;
+    std::size_t dependent_modifier = (slope >= 0) ? ((loop_y) ? -1 : 1) : ((loop_y) ? 1 : -1);
+
+    for (;independent<independent_end; independent++)
     {
+        this->draw_character({*x_coord, *y_coord}, __character, __foreground_color, __background_color);
+
+        error += error_modifier;
         if (error > 0.5f)
         {
-            y_value++;
-            error -= 1;
+            dependent += dependent_modifier;
+            error -= 1.0f;
         }
-
-        this->draw_character({x_value, y_value}, __character, __foreground_color, __background_color);
-        error += slope;
     }
-    }
-
-    // this->draw_character(start, __character, {0, 255, 0}, {0, 255, 0});
-    // this->draw_character(end, __character, {255, 0, 0}, {255, 0, 0});
-
+    
     return;
 }
 
 template <std::size_t _Width, std::size_t _Height>
-constexpr void nox::tui<_Width, _Height>::draw_line()
+constexpr void nox::tui<_Width, _Height>::draw_line(nox::vec2<std::size_t> __start_position, nox::vec2<size_t> __end_position, const nox::color *__color)
 {
+    this->draw_line_c(__start_position, __end_position, ' ', __color, __color);
     return;
 }
